@@ -92,3 +92,6 @@ kotlin/gradle.properties
 # VS Code project files
 .project
 org.eclipse.buildship.core.prefs
+
+# Do not commit license
+java/gradle.properties
