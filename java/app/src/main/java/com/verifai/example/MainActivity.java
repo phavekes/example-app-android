@@ -2,6 +2,8 @@ package com.verifai.example;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.util.Log;
@@ -32,6 +34,7 @@ import java.util.Objects;
 
 public class MainActivity extends Activity {
     private VerifaiResult result;
+    private String token;
 
     public MainActivity() {
         result = null;
@@ -76,6 +79,18 @@ public class MainActivity extends Activity {
                 startLiveness();
             }
         });
+
+        // Handle app links.
+        Intent appLinkIntent = getIntent();
+        if (appLinkIntent.getAction() != null && appLinkIntent.getAction()==appLinkIntent.ACTION_VIEW ) {
+            String appLinkAction = appLinkIntent.getAction();
+            Uri appLinkData = appLinkIntent.getData();
+            if (appLinkData.getQueryParameter("scan").equals("true")) {
+                token=appLinkData.getQueryParameter("token");
+                Log.i("info","Started with token " +token);
+                start();
+            }
+        }
     }
 
 
@@ -85,6 +100,7 @@ public class MainActivity extends Activity {
     private void start() {
         VerifaiConfiguration configuration = new VerifaiConfiguration();
         configuration.setScanDuration(5.0);
+        //configuration.setEnableVisualInspection();
         Verifai.configure(configuration);
         VerifaiResultListener resultListener = new VerifaiResultListener() {
             @Override
@@ -95,6 +111,7 @@ public class MainActivity extends Activity {
             @Override
             public void onSuccess(@NonNull VerifaiResult verifaiResult) {
                 result = verifaiResult;
+                Log.i("info",result.component5().getMrzString());
                 showNfcButton();
             }
 
@@ -115,7 +132,7 @@ public class MainActivity extends Activity {
         VerifaiNfcResultListener nfcResultListener = new VerifaiNfcResultListener() {
             @Override
             public void onResult(@NotNull VerifaiNfcResult verifaiNfcResult) {
-
+                //Log.i("info",verifaiNfcResult.get);
             }
 
             @Override
@@ -163,6 +180,7 @@ public class MainActivity extends Activity {
         }
     }
 
+
     /**
      * Show the NFC button when needed
      */
@@ -171,7 +189,7 @@ public class MainActivity extends Activity {
         this.findViewById(R.id.start_nfc).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startNfc(getBaseContext());
+                startNfc(MainActivity.this);
             }
         });
     }
