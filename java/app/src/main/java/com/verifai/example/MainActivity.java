@@ -7,11 +7,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 import com.verifai.core.Verifai;
 import com.verifai.core.VerifaiConfiguration;
+import com.verifai.core.VerifaiInstructionScreenConfiguration;
 import com.verifai.core.VerifaiLogger;
 import com.verifai.core.listeners.VerifaiResultListener;
 import com.verifai.core.result.VerifaiResult;
@@ -35,6 +37,7 @@ import java.util.Objects;
 public class MainActivity extends Activity {
     private VerifaiResult result;
     private String token;
+    private String givenname;
 
     public MainActivity() {
         result = null;
@@ -98,9 +101,23 @@ public class MainActivity extends Activity {
      * Start the Verifai scan process
      */
     private void start() {
-        VerifaiConfiguration configuration = new VerifaiConfiguration();
-        configuration.setScanDuration(5.0);
-        //configuration.setEnableVisualInspection();
+        VerifaiConfiguration configuration = new VerifaiConfiguration(
+                true, // require_document_copy: default true
+                true, // enable_post_cropping: default true
+                true, // enable_manual: default true
+                false, // require_mrz_contents: default false
+                false, // require_nfc_when_available: default false
+                true, // read_mrz_contents: default true
+                5.0, // scanDuration: default 5.0
+                true, // show_instruction_screens: deprecated
+                new ArrayList<>(), // extraValidators
+                new ArrayList<>(), // document_filters
+                true, // document_filters_auto_create_validators: default true
+                true, // is_scan_help_enabled: default true
+                true, // require_cropped_image: default true
+                new VerifaiInstructionScreenConfiguration(), // instructionScreenConfiguration
+                true // enableVisualInspection: default false
+        );
         Verifai.configure(configuration);
         VerifaiResultListener resultListener = new VerifaiResultListener() {
             @Override
@@ -132,7 +149,9 @@ public class MainActivity extends Activity {
         VerifaiNfcResultListener nfcResultListener = new VerifaiNfcResultListener() {
             @Override
             public void onResult(@NotNull VerifaiNfcResult verifaiNfcResult) {
-                //Log.i("info",verifaiNfcResult.get);
+                Log.i("info","Voornaam: "+verifaiNfcResult.getMrzData().toString());
+                givenname = verifaiNfcResult.getMrzData().getFirstName();
+                updateDataDisplay();
             }
 
             @Override
@@ -189,8 +208,19 @@ public class MainActivity extends Activity {
         this.findViewById(R.id.start_nfc).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startNfc(MainActivity.this);
+                startNfc(getBaseContext());
             }
         });
     }
+
+    /**
+     * Show the data found
+     */
+    private void updateDataDisplay() {
+        final TextView givennameTextView = (TextView) findViewById(R.id.givennametextView);
+        givennameTextView.setVisibility(View.VISIBLE);
+        givennameTextView.setText(this.givenname);
+    }
+
+
 }

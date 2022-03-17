@@ -95,3 +95,4 @@ org.eclipse.buildship.core.prefs
 
 # Do not commit license
 java/gradle.properties
+kotlin/gradle.properties

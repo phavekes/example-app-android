@@ -1,15 +1,16 @@
-package com.verifai.example
+package nl.eduid.verifai
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.verifai.core.*
+import com.verifai.core.Verifai
+import com.verifai.core.VerifaiConfiguration
 import com.verifai.core.exceptions.LicenceNotValidException
 import com.verifai.core.listeners.VerifaiResultListener
 import com.verifai.core.result.VerifaiResult
-import com.verifai.example.databinding.ActivityMainBinding
+import nl.eduid.verifai.databinding.ActivityMainBinding
 
 /**
  * The MainActivity of this SDK example
@@ -24,11 +25,24 @@ import com.verifai.example.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private var token: String? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
+
+        // Handle app links.
+        val appLinkIntent = intent
+        if (appLinkIntent.action === Intent.ACTION_VIEW) {
+            val appLinkData = appLinkIntent.data
+            if (appLinkData!!.getQueryParameter("scan") == "true") {
+                token = appLinkData.getQueryParameter("token")
+                Log.i("info", "Started with token $token")
+                start(binding.root)
+            }
+        }
     }
 
     /**
@@ -39,6 +53,7 @@ class MainActivity : AppCompatActivity() {
      * 2. Call Verifai.startScan(params) Verifai will startScanning if it has received a valid licence. It will throw
      *      an error when the licence is invalid. Please catch this error.
      */
+    @Suppress("UNUSED_PARAMETER")
     fun start(view: View) {
         val licence = BuildConfig.verifaiLicence
         Verifai.setLicence(this@MainActivity, licence)

@@ -1,4 +1,4 @@
-package com.verifai.example
+package nl.eduid.verifai
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -27,6 +27,7 @@ class GeneralResultActivity() : ComponentActivity() {
             MaterialTheme() {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
+                    @Suppress("UNCHECKED_CAST")
                     MessageList(
                         title = intent.getStringExtra("title")!!,
                         fields = intent.getSerializableExtra("result")!! as HashMap<String, String>

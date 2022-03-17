@@ -1,4 +1,4 @@
-package com.verifai.example
+package nl.eduid.verifai
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,7 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.verifai.core.Verifai
-import com.verifai.example.databinding.ActivityVerifaiResultBinding
+import nl.eduid.verifai.databinding.ActivityVerifaiResultBinding
 import com.verifai.liveness.VerifaiLiveness
 import com.verifai.liveness.VerifaiLivenessCheckListener
 import com.verifai.liveness.checks.CloseEyes
@@ -35,7 +35,7 @@ class VerifaiResultActivity : AppCompatActivity() {
         binding.contentResult.startNfcButton.setOnClickListener {
             val nfcListener = object : VerifaiNfcResultListener {
                 override fun onResult(result: VerifaiNfcResult) {
-                    Verifai.logger?.log("NFC completed")
+                    Verifai.logger?.log("NFC completed"+result.mrzData.toString())
                 }
 
                 override fun onCanceled() {

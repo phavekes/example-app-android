@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-
-    <color name="VerifaiPrimaryColor">#FF576D</color> <!-- It is possible to overwrite all the colors. See the docs! -->
+    <color name="colorPrimary">#0062b0</color>
+    <color name="colorPrimaryDark">#152568</color>
+    <color name="colorAccent">#218738</color>
+    <color name="VerifaiPositiveColor">#3677C8</color>
+    <color name="VerifaiPrimaryButtonBackgroundColor">#e9f2f7</color>
+    <color name="VerifaiPrimaryColor">#0062b0</color>
+    <color name="VerifaiAffirmativeButtonBackgroundColor">#0062b0</color>
+    <color name="VerifaiBottomBoxBackgroundColor">#e9f2f7</color>
 </resources>

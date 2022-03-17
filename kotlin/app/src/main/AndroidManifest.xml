@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.verifai.example">
+    package="nl.eduid.verifai">
 
     <uses-feature android:name="android.hardware.camera" />
 
@@ -18,22 +18,55 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".VerifaiResultActivity"
+            android:name="nl.eduid.verifai.VerifaiResultActivity"
             android:label="@string/title_activity_verifai_result"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="nl.eduid.verifai.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.verifai.example.MainActivity" />
         </activity>
-        <activity android:name=".MainActivity"
+        <activity android:name="nl.eduid.verifai.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="test.eduid.nl"
+                    android:path="/verifai" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="test2.eduid.nl"
+                    android:path="/verifai" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="eduid.nl"
+                    android:path="/verifai" />
+            </intent-filter>
         </activity>
-        <activity android:name=".GeneralResultActivity"
+        <activity android:name="nl.eduid.verifai.GeneralResultActivity"
             android:exported="true">
         </activity>
 </application>
